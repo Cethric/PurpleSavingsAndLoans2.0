@@ -10,10 +10,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: AzureResourceGroupDeployment@2
+  inputs:
+    azureSubscription: 'Personal Cloud'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'PurpleBank - Prod'
+    location: 'Australia East'
+    templateLocation: 'Linked artifact'
+    csmFile: '.\infrastructure.json'
+    deploymentMode: 'Incremental'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
