@@ -17,7 +17,7 @@ steps:
     resourceGroupName: 'PurpleBank-Prod'
     location: 'Australia East'
     templateLocation: 'Linked artifact'
-    csmFile: '.\infrastructure.json'
+    csmFile: 'infrastructure.json'
     deploymentMode: 'Incremental'
 
 
