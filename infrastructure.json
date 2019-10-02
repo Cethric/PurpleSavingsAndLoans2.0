@@ -141,8 +141,8 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-            "fileUris": [""],
-          "commandToExecute": "sudo apt update && sudo apt install nginx"
+            "fileUris": ["./setup.sh"],
+          "commandToExecute": "sudo /bin/bash ./setup.sh"
         }
       }
     }
