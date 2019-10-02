@@ -10,15 +10,10 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-
-- task: AzureResourceGroupDeployment@2
-  enabled: 'false'
+- task: AzureRmWebAppDeployment@4
   inputs:
+    ConnectionType: 'AzureRM'
     azureSubscription: 'Personal Cloud'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'PurpleBank-Prod'
-    location: 'Australia East'
-    templateLocation: 'Linked artifact'
-    csmFile: 'infrastructure.json'
-    csmParametersFile: 'logic.json'
-    deploymentMode: 'Incremental'
+    appType: 'webApp'
+    WebAppName: 
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*'
