@@ -14,7 +14,7 @@ steps:
   inputs:
     azureSubscription: 'Personal Cloud'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'PurpleBank - Prod'
+    resourceGroupName: 'PurpleBank-Prod'
     location: 'Australia East'
     templateLocation: 'Linked artifact'
     csmFile: '.\infrastructure.json'
