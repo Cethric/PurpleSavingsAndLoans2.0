@@ -23,4 +23,4 @@ steps:
     azureSubscription: 'Personal Cloud'
     appType: 'webApp'
     WebAppName: 'PurpleSandL'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
