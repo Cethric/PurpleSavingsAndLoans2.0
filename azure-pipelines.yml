@@ -10,15 +10,27 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-
 - task: AzureResourceGroupDeployment@2
-  enabled: 'false'
   inputs:
     azureSubscription: 'Personal Cloud'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'PurpleBank-Prod'
+    resourceGroupName: 'PurpleSandLProd'
     location: 'Australia East'
     templateLocation: 'Linked artifact'
     csmFile: 'infrastructure.json'
     csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirector)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(System.DefaultWorkingDirector)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Personal Cloud'
+    appType: 'webApp'
+    WebAppName: 'PurpleSandL'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
