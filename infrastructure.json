@@ -141,7 +141,7 @@
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-            "fileUris": ["./setup.sh"],
+            "fileUris": ["https://automatically.blob.core.windows.net/automatically/setup.sh"],
           "commandToExecute": "sudo /bin/bash ./setup.sh"
         }
       }
