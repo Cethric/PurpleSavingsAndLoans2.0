@@ -22,9 +22,3 @@ steps:
     csmFile: 'infrastructure.json'
     csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
-
-- task: CopyFilesOverSSH@0
-  inputs:
-    sshEndpoint: 'Copy_Website'
-    contents: '**'
-    targetFolder: '/usr/share/nginx/html'
