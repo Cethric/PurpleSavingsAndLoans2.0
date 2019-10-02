@@ -4,165 +4,129 @@
     "parameters": {},
     "variables": {},
     "resources": [
-{
-    "name": "[toLower('purpbanksydweb01storage')]",
-    "type": "Microsoft.Storage/storageAccounts",
-    "apiVersion": "2015-06-15",
-    "location": "[resourceGroup().location]",
-    "tags": {
-        "displayName": "purpbanksydweb01 Storage Account"
-    },
-    "properties": {
-        "accountType": "Standard_LRS"
-    }
-},
-{
-    "name": "purpbanksydweb01-PublicIP",
-    "type": "Microsoft.Network/publicIPAddresses",
-    "apiVersion": "2018-08-01",
-    "location": "[resourceGroup().location]",
-    "tags": {
-        "displayName": "PublicIPAddress"
-    },
-    "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-            "domainNameLabel": "[toLower('purpbanksydweb01')]"
-        }
-    }
-},
-{
-    "name": "purpbanksydweb01-VirtualNetwork",
-    "type": "Microsoft.Network/virtualNetworks",
-    "apiVersion": "2018-08-01",
-    "location": "[resourceGroup().location]",
-    "tags": {
-        "displayName": "VirtualNetwork"
-    },
-    "properties": {
-        "addressSpace": {
-            "addressPrefixes": [
-                "10.0.0.0/16"
-            ]
-        },
-        "subnets": [
-            {
-                "name": "purpbanksydweb01-VirtualNetwork-Subnet",
-                "properties": {
-                    "addressPrefix": "10.0.0.0/24"
-                }
-            }
-        ]
-    }
-},
-{
-    "name": "purpbanksydweb01-NetworkInterface",
-    "type": "Microsoft.Network/networkInterfaces",
-    "apiVersion": "2018-08-01",
-    "location": "[resourceGroup().location]",
-    "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', 'purpbanksydweb01-PublicIP')]",
-        "[resourceId('Microsoft.Network/virtualNetworks', 'purpbanksydweb01-VirtualNetwork')]"
-    ],
-    "tags": {
-        "displayName": "purpbanksydweb01 Network Interface"
-    },
-    "properties": {
-        "ipConfigurations": [
-            {
-                "name": "ipConfig1",
-                "properties": {
-                    "privateIPAllocationMethod": "Dynamic",
-                    "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'purpbanksydweb01-PublicIP')]"
-                    },
-                    "subnet": {
-                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'purpbanksydweb01-VirtualNetwork', 'purpbanksydweb01-VirtualNetwork-Subnet')]"
-                    }
-                }
-            }
-        ]
-    }
-},
-{
-    "name": "purpbanksydweb01",
-    "type": "Microsoft.Compute/virtualMachines",
-    "apiVersion": "2017-03-30",
-    "location": "[resourceGroup().location]",
-    "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', toLower('purpbanksydweb01storage'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces', 'purpbanksydweb01-NetworkInterface')]"
-    ],
-    "tags": {
-        "displayName": "purpbanksydweb01"
-    },
-    "properties": {
-        "hardwareProfile": {
-            "vmSize": "Standard_A2"
-        },
-        "osProfile": {
-            "computerName": "purpbanksydweb01",
-            "adminUsername": "adminUsername",
-            "adminPassword": "adminPassword"
-        },
-        "storageProfile": {
-            "imageReference": {
-                "publisher": "MicrosoftWindowsServer",
-                "offer": "WindowsServer",
-                "sku": "2012-R2-Datacenter",
-                "version": "latest"
-            },
-            "osDisk": {
-                "name": "purpbanksydweb01OSDisk",
-                "caching": "ReadWrite",
-                "createOption": "FromImage"
-            }
-        },
-        "networkProfile": {
-            "networkInterfaces": [
-                {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces', 'purpbanksydweb01-NetworkInterface')]"
-                }
-            ]
-        },
-        "diagnosticsProfile": {
-            "bootDiagnostics": {
-                "enabled": true,
-                "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', toLower('purpbanksydweb01storage'), '2015-06-15').primaryEndpoints.blob]"
-            }
-        }
-    },
-    "resources": [
         {
-            "name": "purpbanksydweb01AzureDiagnostics",
-            "type": "extensions",
-            "apiVersion": "2017-03-30",
+            "name": "[toLower('purpbanksydweb01storage')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "tags": {
-                "displayName": "purpbanksydweb01AzureDiagnostics"
+                "displayName": "purpbanksydweb01 Storage Account"
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', 'purpbanksydweb01')]"
-            ],
             "properties": {
-                "publisher": "Microsoft.Azure.Diagnostics",
-                "type": "IaaSDiagnostics",
-                "typeHandlerVersion": "1.5",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "xmlCfg": "[base64('<WadCfg> <DiagnosticMonitorConfiguration overallQuotaInMB=\"4096\" xmlns=\"http: //schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration\"> <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter=\"Error\"/> <Logs scheduledTransferPeriod=\"PT1M\" scheduledTransferLogLevelFilter=\"Error\" /> <Directories scheduledTransferPeriod=\"PT1M\"> <IISLogs containerName =\"wad-iis-logfiles\" /> <FailedRequestLogs containerName =\"wad-failedrequestlogs\" /> </Directories> <WindowsEventLog scheduledTransferPeriod=\"PT1M\" > <DataSource name=\"Application!*\" /> </WindowsEventLog> <CrashDumps containerName=\"wad-crashdumps\" dumpType=\"Mini\"> <CrashDumpConfiguration processName=\"WaIISHost.exe\"/> <CrashDumpConfiguration processName=\"WaWorkerHost.exe\"/> <CrashDumpConfiguration processName=\"w3wp.exe\"/> </CrashDumps> <PerformanceCounters scheduledTransferPeriod=\"PT1M\"> <PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Available MBytes\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\ISAPI Extension Requests/sec\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\Bytes Total/Sec\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\ASP.NET Applications(__Total__)\\Requests/Sec\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\ASP.NET Applications(__Total__)\\Errors Total/Sec\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\ASP.NET\\Requests Queued\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\ASP.NET\\Requests Rejected\" sampleRate=\"PT3M\" /> <PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% Processor Time\" sampleRate=\"PT3M\" /> </PerformanceCounters> </DiagnosticMonitorConfiguration> </WadCfg>')]",
-                    "storageAccount": "[toLower('purpbanksydweb01storage')]"
+                "accountType": "Standard_LRS"
+            }
+        },
+        {
+            "name": "purpbanksydweb01-PublicIP",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "PublicIPAddress"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[toLower('purpbanksydweb01')]"
+                }
+            }
+        },
+        {
+            "name": "purpbanksydweb01-VirtualNetwork",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "purpbanksydweb01-VirtualNetwork"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
                 },
-                "protectedSettings": {
-                    "storageAccountName": "[toLower('purpbanksydweb01storage')]",
-                    "storageAccountKey": "[listkeys(resourceId('Microsoft.Storage/storageAccounts', toLower('purpbanksydweb01storage')), '2015-06-15').key1]",
-                    "storageAccountEndPoint": "[reference(resourceId('Microsoft.Storage/storageAccounts', toLower('purpbanksydweb01storage')), '2015-06-15').primaryEndpoints.blob]"
+                "subnets": [
+                    {
+                        "name": "purpbanksydweb01-VirtualNetwork-Subnet",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "purpbanksydweb01-NetworkInterface",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'purpbanksydweb01-PublicIP')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', 'purpbanksydweb01-VirtualNetwork')]"
+            ],
+            "tags": {
+                "displayName": "purpbanksydweb01-NetworkInterface"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'purpbanksydweb01-PublicIP')]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'purpbanksydweb01-VirtualNetwork', 'purpbanksydweb01-VirtualNetwork-Subnet')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "purpbanksydweb01",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2017-03-30",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', toLower('purpbanksydweb01storage'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'purpbanksydweb01-NetworkInterface')]"
+            ],
+            "tags": {
+                "displayName": "purpbanksydweb01"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D1"
+                },
+                "osProfile": {
+                    "computerName": "purpbanksydweb01",
+                    "adminUsername": "adminUsername",
+                    "adminPassword": "adminPassword"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "purpbanksydweb01-OSDisk",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'purpbanksydweb01-NetworkInterface')]"
+                        }
+                    ]
                 }
             }
         }
-    ]
-}
-
     ],
     "outputs": {}
 }
