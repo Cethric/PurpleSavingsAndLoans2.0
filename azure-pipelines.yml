@@ -10,13 +10,6 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: AzureFileCopy@3
-  inputs:
-    SourcePath: '$(Build.Repository.LocalPath)'
-    azureSubscription: 'Personal Cloud'
-    Destination: 'AzureBlob'
-    storage: 'purpbanksydweb01storage'
-    ContainerName: 'pbweb'
 
 - task: AzureResourceGroupDeployment@2
   enabled: 'false'
@@ -29,3 +22,9 @@ steps:
     csmFile: 'infrastructure.json'
     csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'Copy_Website'
+    contents: '**'
+    targetFolder: '/usr/share/nginx/html'
