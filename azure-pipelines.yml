@@ -10,6 +10,16 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: AzureResourceGroupDeployment@2
+  inputs:
+    azureSubscription: 'Personal Cloud'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'PurpleSandLProd'
+    location: 'Australia East'
+    templateLocation: 'Linked artifact'
+    csmFile: 'infrastructure.json'
+    csmParametersFile: 'logic.json'
+    deploymentMode: 'Incremental'
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirector)'
