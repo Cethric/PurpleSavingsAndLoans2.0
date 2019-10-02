@@ -126,7 +126,26 @@
                     ]
                 }
             }
+        },
+        {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat('purpbanksydweb01','/installcustomscript')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', 'purpbanksydweb01')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+            "fileUris": [""],
+          "commandToExecute": "sudo apt update && sudo apt install nginx"
         }
+      }
+    }
     ],
     "outputs": {}
 }
