@@ -21,15 +21,5 @@ steps:
     csmFile: 'infrastructure.json'
     csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
-- task: AzureFileCopy@3
-  inputs:
-    SourcePath: '$(Build.Repository.LocalPath)'
-    azureSubscription: 'Personal Cloud'
-    Destination: 'AzureVMs'
-    storage: 'purpbanksydweb01storage'
-    resourceGroup: 'PURPLEBANK-PROD'
-    MachineNames: '*'
-    vmsAdminUserName: 'pbadmin'
-    vmsAdminPassword: 'PurpleB@nkPassw0rd!'
-    TargetPath: '/usr/local/nginx/html'
+
 
