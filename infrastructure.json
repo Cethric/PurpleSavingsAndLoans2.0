@@ -102,8 +102,8 @@
                 },
                 "osProfile": {
                     "computerName": "purpbanksydweb01",
-                    "adminUsername": "adminUsername",
-                    "adminPassword": "adminPassword"
+                    "adminUsername": "pbadmin",
+                    "adminPassword": "PurpleB@nkPassw0rd!"
                 },
                 "storageProfile": {
                     "imageReference": {
