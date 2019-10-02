@@ -30,7 +30,7 @@
                "displayName": "PurpleSandL"
            },
            "dependsOn": [
-               "[resourceId('Microsoft.Web/serverfarms', 'PurpleSandL')]"
+               "[resourceId('Microsoft.Web/serverfarms', 'PurpleSandLSF')]"
            ],
            "properties": {
                "name": "PurpleSandL",
