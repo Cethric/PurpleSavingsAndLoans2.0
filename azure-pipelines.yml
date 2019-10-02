@@ -18,6 +18,7 @@ steps:
     location: 'Australia East'
     templateLocation: 'Linked artifact'
     csmFile: 'infrastructure.json'
+    csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
 
 
