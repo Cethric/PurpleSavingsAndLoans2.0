@@ -15,5 +15,5 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Personal Cloud'
     appType: 'webApp'
-    WebAppName: 
+    WebAppName: 'PurpleSandL'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*'
