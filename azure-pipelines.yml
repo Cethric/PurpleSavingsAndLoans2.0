@@ -30,14 +30,14 @@ steps:
     deploymentMode: 'Incremental'
     enableDeploymentPrerequisites: "ConfigureVMWithWinrm"
 
-- task: AzureFileCopy@3
+- task: FtpUpload@2
   inputs:
-    azureSubscription: 'Personal Cloud'
-    Destination: 'AzureVMs'
-    storage: 'psandlbootstrap'
-    resourceGroup: 'PURPLESANDLPROD'
-    MachineNames: 'purpsandlweb'
-    vmsAdminUserName: 'pbadmin'
-    vmsAdminPassword: 'PB@dministratorPassword123'
-    TargetPath: 'c:\\inetpub\\wwwroot\\'
-    CleanTargetBeforeCopy: true
+    credentialsOption: 'serviceEndpoint'
+    serverEndpoint: 'purpsandlweb.australiaeast.cloudapp.azure.com'
+    rootDirectory: 
+    filePatterns: '**'
+    remoteDirectory: ''
+    clean: false
+    cleanContents: false
+    preservePaths: false
+    trustSSL: false
