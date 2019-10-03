@@ -38,5 +38,5 @@ steps:
     MachineNames: '*'
     vmsAdminUserName: 'pbadmin'
     vmsAdminPassword: 'PB@dministratorPassword123'
-    TargetPath: 'c:\inetpub\wwwroot\'
+    TargetPath: 'c:\\inetpub\\wwwroot\\'
     CleanTargetBeforeCopy: true
