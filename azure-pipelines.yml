@@ -34,7 +34,7 @@ steps:
   inputs:
     credentialsOption: 'serviceEndpoint'
     serverEndpoint: 'purpsandlweb.australiaeast.cloudapp.azure.com'
-    rootDirectory: 
+    rootDirectory: ''
     filePatterns: '**'
     remoteDirectory: ''
     clean: false
