@@ -1,0 +1,1 @@
+Install-WindowsFeature web-server -includemanagementtools
