@@ -181,7 +181,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
             "fileUris": [
-                "[concat('artifactsLocation', '/scripts/bootstrap.ps1', 'artifactsLocationSasToken')]"
+                "https://psandlbootstrap.blob.core.windows.net/bootstrap/bootstrap.ps1"
             ],
             "commandToExecute": "powershell -ExecutionPolicy Bypass -file bootstrap.ps1"
         }
