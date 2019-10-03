@@ -12,7 +12,7 @@ pool:
 steps:
 
 - task: AzureResourceGroupDeployment@2
-  enabled: 'false'
+  enabled: 'true'
   inputs:
     azureSubscription: 'Personal Cloud'
     action: 'Create Or Update Resource Group'
