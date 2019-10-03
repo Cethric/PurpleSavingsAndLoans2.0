@@ -170,7 +170,7 @@
     ],
     "properties": {
         "publisher": "Microsoft.Compute",
-        "type": "bootstrapExtension",
+        "type": "CustomScriptExtension",
         "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {
@@ -185,3 +185,4 @@
     ],
     "outputs": {}
 }
+
