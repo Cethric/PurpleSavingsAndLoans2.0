@@ -18,7 +18,7 @@ steps:
     ContainerName: 'psandlbootstrap'
 
 - task: AzureResourceGroupDeployment@2
-  enabled: 'true'
+  enabled: 'false'
   inputs:
     azureSubscription: 'Personal Cloud'
     action: 'Create Or Update Resource Group'
@@ -35,7 +35,7 @@ steps:
     Destination: 'AzureVMs'
     storage: 'psandlbootstrap'
     resourceGroup: 'PURPLESANDLPROD'
-    MachineNames: '*'
+    MachineNames: 'purpsandlweb'
     vmsAdminUserName: 'pbadmin'
     vmsAdminPassword: 'PB@dministratorPassword123'
     TargetPath: 'c:\\inetpub\\wwwroot\\'
