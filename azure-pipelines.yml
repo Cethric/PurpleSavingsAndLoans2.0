@@ -10,12 +10,6 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: AzureFileCopy@3
-  inputs:
-    azureSubscription: 'Personal Cloud'
-    Destination: 'AzureBlob'
-    storage: 'psandlbootstrap'
-    ContainerName: 'psandlbootstrap'
 
 - task: AzureResourceGroupDeployment@2
   enabled: 'false'
@@ -34,9 +28,9 @@ steps:
   inputs:
     credentialsOption: 'serviceEndpoint'
     serverEndpoint: 'purpsandlweb.australiaeast.cloudapp.azure.com'
-    rootDirectory: ''
+    rootDirectory: '.'
     filePatterns: '**'
-    remoteDirectory: ''
+    remoteDirectory: '.'
     clean: false
     cleanContents: false
     preservePaths: false
