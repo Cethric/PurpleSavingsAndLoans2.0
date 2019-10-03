@@ -18,7 +18,7 @@ steps:
     ContainerName: 'psandlbootstrap'
 
 - task: AzureResourceGroupDeployment@2
-  enabled: 'false'
+  enabled: 'true'
   inputs:
     azureSubscription: 'Personal Cloud'
     action: 'Create Or Update Resource Group'
@@ -28,6 +28,7 @@ steps:
     csmFile: 'infrastructure.json'
     csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
+    enableDeploymentPrerequisites: "ConfigureVMWithWinrm"
 
 - task: AzureFileCopy@3
   inputs:
