@@ -28,3 +28,15 @@ steps:
     csmFile: 'infrastructure.json'
     csmParametersFile: 'logic.json'
     deploymentMode: 'Incremental'
+
+- task: AzureFileCopy@3
+  inputs:
+    azureSubscription: 'Personal Cloud'
+    Destination: 'AzureVMs'
+    storage: 'psandlbootstrap'
+    resourceGroup: 'PURPLESANDLPROD'
+    MachineNames: '*'
+    vmsAdminUserName: 'pbadmin'
+    vmsAdminPassword: 'PB@dministratorPassword123'
+    TargetPath: 'c:\inetpub\wwwroot\'
+    CleanTargetBeforeCopy: true
