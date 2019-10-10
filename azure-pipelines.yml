@@ -13,7 +13,7 @@ steps:
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '.'
-    azureSubscription: 'Pay-As-You-Go(2baba872-17b2-41a8-882a-36c5c7599cb1)'
+    azureSubscription: 'Visual Studio Professional(a7c01838-8c1a-463f-85db-9b46c88dd664)'
     Destination: 'AzureBlob'
     storage: 'psandlweb'
     ContainerName: '$web'
