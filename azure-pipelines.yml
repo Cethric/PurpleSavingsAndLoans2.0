@@ -17,3 +17,8 @@ steps:
     Destination: 'AzureBlob'
     storage: 'psandlweb'
     ContainerName: '$web'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'Write-Host "Published build with $(Build.SourceVersionMessage)"'
