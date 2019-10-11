@@ -12,18 +12,84 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $username = "admin"
-      $password = "CddjFj8GK0Se"
-      $instance = "dev65180"
-      $message = "Please release the new code with commit `"$(Build.SourceVersionMessage)`""
-      $cred = New-Object System.Management.Automation.PSCredential -ArgumentList @($username,(ConvertTo-SecureString -String $password -AsPlainText -Force))
-      
-      $sn = New-WebServiceProxy -uri http://$instance.service-now.com/incident.do?WSDL —Credential $cred
-      $get = new-object ($type + '.get')
-      $getRecords = new-object ($type + '.getRecords')
-      $update = new-object ($type + '.update')
-      $insert = new-object ($type + '.insert')
-      
+      ###############################################
+      # Configure variable below, you will be prompted for SNOW login & ClientID etc
+      ###############################################
+      $SNOWURL = "https://dev65180.service-now.com/"
+      ################################################################################
+      # Nothing to configure below this line - Starting the main function of the script
+      ################################################################################
+      ###############################################
+      # Prompting & saving SNOW credentials, delete the XML file created to reset
+      ###############################################
+      # Setting credential file
+      $SNOWCredentialsFile = ".\SNOWCredentials.xml"
+      # Testing if file exists
+      $SNOWCredentialsFileTest = Test-Path $SNOWCredentialsFile
+      # IF doesn't exist, prompting and saving credentials
+      IF ($SNOWCredentialsFileTest -eq $False) {
+          $SNOWCredentials = Get-Credential -Message "Enter SNOW login credentials"
+          $SNOWCredentials | EXPORT-CLIXML $SNOWCredentialsFile -Force
+      }
+      # Importing credentials
+      $SNOWCredentials = IMPORT-CLIXML $SNOWCredentialsFile
+      # Setting the username and password from the credential file (run at the start of each script)
+      $SNOWUsername = $SNOWCredentials.UserName
+      $SNOWPassword = $SNOWCredentials.GetNetworkCredential().Password
+      ###############################################
+      # Prompting & saving ClientID and ClientSecret, delete the XML file to reset 
+      ###############################################
+      # Setting credential file
+      $SNOWClientCredentialsFile = ".\SNOWClientCredentials.xml"
+      # Testing if file exists
+      $SNOWClientCredentialsFileTest = Test-Path $SNOWClientCredentialsFile
+      # IF doesn't exist, prompting and saving credentials
+      IF ($SNOWClientCredentialsFileTest -eq $False) {
+          $SNOWClientCredentials = Get-Credential -Message "Enter SNOW ClientID and Client Secret"
+          $SNOWClientCredentials | EXPORT-CLIXML $SNOWClientCredentialsFile -Force
+      }
+      # Importing credentials
+      $SNOWClientCredentials = IMPORT-CLIXML $SNOWClientCredentialsFile
+      # Setting the username and password from the credential file (run at the start of each script)
+      $SNOWClientID = $SNOWClientCredentials.UserName
+      $SNOWClientSecret = $SNOWClientCredentials.GetNetworkCredential().Password
+      ##################################
+      # Building SNOW API string & invoking REST API
+      ##################################
+      $SNOWSessionURL = $SNOWURL + "oauth_token.do"
+      $AuthBody = [System.Text.Encoding]::UTF8.GetBytes("grant_type=password&username=" + $Username + "&password=" + $Password + "&client_id=" + $SNOWClientID + "&client_secret=" + $SNOWClientSecret)
+      $Type = "application/json"
+      # Authenticating with API
+      Try {
+          $SNOWSessionResponse = Invoke-RestMethod -Method POST -Uri $SNOWSessionURL -Body $AuthBody -ContentType "application/x-www-form-urlencoded"
+      }
+      Catch {
+          $_.Exception.ToString()
+          $error[0] | Format-List -Force
+      }
+      # Extracting the token from the JSON response
+      $SNOWSessionHeader = @{'Authorization' = "Bearer $($SNOWSessionResponse.access_token)" }
+      ###############################################
+      # Getting list of Incidents
+      ###############################################
+      $IncidentListURL = $SNOWURL + "api/now/table/incident"
+      Try {
+          $IncidentListJSON = Invoke-RestMethod -Method GET -Uri $IncidentListURL -TimeoutSec 100 -Headers $SNOWSessionHeader -ContentType $Type
+          $IncidentList = $IncidentListJSON.result
+      }
+      Catch {
+          Write-Host $_.Exception.ToString()
+          $error[0] | Format-List -Force
+      }
+      ###############################################
+      # Host output of the data
+      ###############################################
+      $IncidentCount = $IncidentList.count
+      $ActiveIncidentCount = $IncidentList | Where-Object { $_.active -eq "true" } | Measure | Select -ExpandProperty Count
+      "Open Incidents:"
+      $IncidentList | Where-Object { $_.active -eq "true" } | Select number, short_description, opened_at, impact, priority | Sort-Object opened_at -Descending | Format-Table
+      "ActiveIncidents:$ActiveIncidentCount"
+      "TotalIncidents:$IncidentCount"
 # Copy all the website files to the Azure storage account
 - task: AzureFileCopy@3
   inputs:
