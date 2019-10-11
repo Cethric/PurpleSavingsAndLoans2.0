@@ -1,15 +1,16 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
+# What makes this pipeline run? When code gets checked into master
 trigger:
 - master
 
+# The build agent will use the latest version of Windows, with all the latest stuff
 pool:
   vmImage: 'windows-latest'
 
+
+# Let's actually deploy our website
 steps:
+
+# Copy all the website files to the Azure storage account
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '.'
@@ -18,6 +19,7 @@ steps:
     storage: 'psandlweb'
     ContainerName: '$web'
 
+# Output what we just built, for safe keeping
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
