@@ -13,7 +13,8 @@ steps:
     targetType: 'inline'
     script: |
       . .\newsnow.ps1
-      newSNOWChange -SNOWuser admin -SNOWpass BcG1buYtOvM2 -instanceName dev65180 -CRShortDesc "Release: $(Build.SourceVersionMessage) -CRFullDesc "Purple Savings and Loans webapp release to incorporate $(Build.SourceVersionMessage)" -CRJustification "Release Team" -CRPlan "Automated Release" -CRTestPlan "To be handed over to test team" -CRBackoutPlan "Rollback Commit" -CRSummaryNotes "By Geordie"
+      newSNOWChange -SNOWuser admin -SNOWpass BcG1buYtOvM2 -instanceName dev65180 -CRShortDesc "Release: $(Build.SourceVersionMessage)" -CRFullDesc "Purple Savings and Loans webapp release to incorporate $(Build.SourceVersionMessage)" -CRJustification "Release Team" -CRPlan "Automated Release" -CRTestPlan "To be handed over to test team" -CRBackoutPlan "Rollback Commit" -CRSummaryNotes "By Geordie"
+
 
 # Copy all the website files to the Azure storage account
 - task: AzureFileCopy@3
