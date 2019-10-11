@@ -6,10 +6,24 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-
 # Let's actually deploy our website
 steps:
-
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $username = "admin"
+      $password = "CddjFj8GK0Se"
+      $instance = "dev65180"
+      $message = "Please release the new code with commit `"$(Build.SourceVersionMessage)`""
+      $cred = New-Object System.Management.Automation.PSCredential -ArgumentList @($username,(ConvertTo-SecureString -String $password -AsPlainText -Force))
+      
+      $sn = New-WebServiceProxy -uri http://$instance.service-now.com/incident.do?WSDL —Credential $cred
+      $get = new-object ($type + '.get')
+      $getRecords = new-object ($type + '.getRecords')
+      $update = new-object ($type + '.update')
+      $insert = new-object ($type + '.insert')
+      
 # Copy all the website files to the Azure storage account
 - task: AzureFileCopy@3
   inputs:
