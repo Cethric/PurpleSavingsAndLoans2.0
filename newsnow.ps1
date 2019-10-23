@@ -29,7 +29,7 @@ function newSNOWChange {
         service_offering  = "Other"
         reason            = "starship upgrade"
         u_client_impact   = "No"
-        start_date        = "2020-11-1 01:00:00"
+        start_date        = $(get-date -Format "yyyy-MM-dd HH:mm:00")
         end_date          = "2020-11-30 23:00:00"
         watch_list        = "Watch List Sys_ID"
         Parent            = "Parent Incident or Change Request"
